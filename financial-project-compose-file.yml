@@ -1,0 +1,32 @@
+services:
+    postgres-db:
+        image: postgres:latest
+        restart: always
+        environment:
+            - POSTGRESS_USER=postgres
+            - POSTGRES_PASSWORD=admin
+        ports:
+            - '5432:5432'
+        container_name: postgres-db
+        networks:
+            - f-network    
+
+    financial-api:
+        image: haronsilva/financial-service:01
+        ports:
+            - '8080:8080'
+        container_name: financial-api    
+        networks:
+            - f-network     
+
+    financial-angular-ui:
+        image: haronsilva/financial-ui-angular:snapshot-1
+        ports:
+            - '90:80'
+        container_name: financial-angular-ui    
+        networks:
+            - f-network    
+        links:
+            - financial-api     
+networks:
+    f-network: {}           
